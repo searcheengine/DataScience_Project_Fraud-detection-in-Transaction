@@ -35,9 +35,18 @@ ggplot(data, aes(x = as.factor(Class))) +
   labs(x = "Class", y = "Count", title = "Fraud vs Legit Transactions")
 
 #4.a Transaction Amount vs Fraud
-ggplot(data, aes(x = as.factor(Class), y = Amount)) +
-  geom_boxplot() +
-  labs(title = "Transaction Amount by Class")
+library(ggplot2)
+
+ggplot(data, aes(x = factor(Class), y = Amount, fill = factor(Class))) +
+  geom_boxplot(outlier.colour = "red", outlier.size = 1.5) +
+  scale_fill_manual(values = c("skyblue", "orange")) +
+  labs(
+    title = "Transaction Amount by Class",
+    x = "Transaction Class (0 = Legit, 1 = Fraud)",
+    y = "Transaction Amount (Scaled)"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
 
 #5 rain-Test Split
 set.seed(123)
@@ -100,6 +109,7 @@ auc(roc_obj)
 #10 Identify Suspicious Transactions
 suspicious_txns <- test[log_pred == 1, ]
 head(suspicious_txns)
+
 
 
 
